@@ -1,2 +1,2 @@
-# licene-info-montpellier
+# licence-info-montpellier
 Cours Licence informatique Université Montpellier
