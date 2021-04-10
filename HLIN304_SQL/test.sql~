@@ -1,0 +1,1 @@
+select R1.nom,R1.prenom,F1.titre from realisateur R1, film F1 where (R1.idR=F1.idRealisateur) and (F1.nbspectateurs=(select max(F2.nbspectateurs) from film F2 where (F2.idRealisateur=R1.idR)));

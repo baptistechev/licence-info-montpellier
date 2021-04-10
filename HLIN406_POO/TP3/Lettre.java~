@@ -1,0 +1,25 @@
+package TD3;
+
+public class Lettre{
+
+    private bool urgente;
+    private final float tarifBase = 0.55;
+
+    public ObjetPostal(String origine,String destination,int codePostal,int poids,float volume,int txRecommandation){
+	this.origine = origine;
+	this.destination = destination;
+	this.codePostal = codePostal;
+	this.poids = poids;
+	this.volume = volume;
+	this.txRecommandation = txRecommandation;
+    }
+
+    public float tarifAff();
+    public float tarifRemb();
+    public void  Affichage();
+    public abstract float getTarifBase();
+    public int getTxRecommandation();
+    public String toString();
+
+    
+}

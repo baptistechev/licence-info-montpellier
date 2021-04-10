@@ -1,0 +1,38 @@
+#include <cstdlib>
+#include "TrisRang.h"
+
+using namespace std;
+
+void fusion(int n1, int n2, int* T1, int* T2, int* T)
+{
+  // A compléter
+}
+
+void trifusion(int n, int* T)
+{
+  // A compléter
+}
+
+int choixPivot(int n, int* T, pivot P) 
+{
+  switch (P)
+  {
+    case FIXE:
+      return T[0];
+      break;
+    case ALEATOIRE:
+      return T[rand() % n];
+      break;
+  }
+}
+
+int rang(int k, int n, int* T, pivot P)
+{
+  return 0; // A modifier !
+}
+
+void trirapide(int n, int* T, pivot P)
+{
+  // A compléter
+}
+

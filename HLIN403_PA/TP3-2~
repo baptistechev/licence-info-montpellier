@@ -1,0 +1,33 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname TP3-2) (read-case-sensitive #t) (teachpacks ((lib "draw.rkt" "teachpack" "htdp"))) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ((lib "draw.rkt" "teachpack" "htdp")) #f)))
+(define (dessiner-gros-point position)
+  (draw-solid-disk position 2))
+
+(define (dessiner-rectangle pos1 pos2)
+  (let ((point1 pos1)
+        (point2 (make-posn (posn-x pos2) (posn-y pos1)))
+        (point3 pos2)
+        (point4 (make-posn (posn-x pos1) (posn-y pos2))))
+    (begin
+      (draw-solid-line point1 point2)
+      (draw-solid-line point2 point3)
+      (draw-solid-line point3 point4)
+      (draw-solid-line point4 point1))))
+
+(define (dessiner-carre position)
+  (let ((pos1 (make-posn (- (posn-x position) 12) (+ (posn-y position) 12)))
+        (pos2 (make-posn (+ (posn-x position) 12) (- (posn-y position) 12))))
+    (dessiner-rectangle pos1 pos2)))
+
+(define (dessiner-demi-dominos position nombre)
+  (begin
+    (dessiner-carre position)
+    (cond
+      ((= nombre 1))
+      ((= nombre 2))
+      ((= nombre 3))
+      ((= nombre 4))
+      ((= nombre 5))
+      ((= nombre 6))
+      )))

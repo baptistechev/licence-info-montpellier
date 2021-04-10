@@ -1,0 +1,39 @@
+package TP3;
+
+public class Colis extends ObjetPostal{
+
+    private String declContenu;
+    private int valeurDeclare;
+
+    public Lettre(String origine,String destination,int codePostal,int poids,float volume,int txRecommandation,String declContenu, int valeurDeclare){
+	super(origine,destination,codePostal,poids,volume,txRecommandation);
+	this.declContenu = declContenu;
+	this.valeurDeclare = valeurDeclare;
+    }
+
+    public float tarifAff(){
+	float t = super.tarifAff();
+	if(urgente){
+	    return t+0.3f;
+	}else{
+	    return t;
+	}
+    } 
+    public float tarifRemb(){
+	if(super.getTxRecommandation() == 1){
+	    return 1.5f;
+	}else if(super.getTxRecommandation() == 2){
+	    return 15;
+	}else{
+	    return 0;
+	}
+    }
+    public float getTarifBase(){
+	return tarifBase;
+    }
+    public String toString(){
+	return super.toString()+urgente;
+    }
+
+    
+}

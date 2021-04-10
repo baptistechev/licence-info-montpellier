@@ -1,0 +1,59 @@
+;Exercice 1
+
+;1
+(define (f x)
+  (+ (expt x 4) 2))
+
+;2
+(define (g x)
+  (+ (sqrt (f x)) (* 3 (f x))))
+
+;3
+(define (h x)
+  (+ (* 12 (g x)) (/ (g x) (f x))))
+
+;Exercice 2
+
+;1
+(define (begaie l)
+  (if (empty? l)
+      l
+      (cons (car l) (cons (car l) (begaie (cdr l))))))
+
+;2
+(define (debegaie l)
+  (cond
+    ((empty? (cdr l)) (list (car l)))
+    ((eq? (car l) (cadr l)) (debegaie (cdr l)))
+    (else (cons (car l) (debegaie (cdr l))))))
+
+;Exercice 3
+
+;1
+(define (assez-proche? x y)
+  (< (abs (- x y)) 1e-05))
+
+;2
+(define (point-fixe f X)
+  (letrec ((aux (lambda (x fx)
+                 (cond
+                   ((assez-proche? x fx) fx)
+                   (else (aux fx (f fx)))))))
+    (aux X (f X))))
+
+;3
+(point-fixe (lambda (x) (+ (sin x) (cos x))) 0)
+
+;4
+;
+;point fixe => f(x) = x
+;=> 1/2 (x + a/x) = x
+;=> a/x = x
+;=> a = x^2
+;=> x = sqrt(a) (ou x = - sqrt(a))
+;Il existe 2 points fixes
+
+;On peut dont calculer la racine carrée de a en trouvant le point fixe positif de f
+
+(define (root a)
+  (abs (point-fixe (lambda (x) (* 1/2 (+ x (/ a x)))) 1)))

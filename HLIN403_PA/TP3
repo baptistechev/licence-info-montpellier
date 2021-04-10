@@ -1,0 +1,36 @@
+(define (von_koch prof a)
+  (if (> prof 0)
+      (von_koch (- prof 1) (* 4/3 a))
+      a))
+
+(require (lib "turtles.ss" "graphics"))
+
+(define (prepa-von-koch)
+  (clear)
+  (turn 180)
+  (move 320)
+  (turn 180))
+
+(define (anim-von-koch n)
+  (letrec (
+           (niv (lambda (x)
+                  (begin
+                    (display x)
+                    (prepa-von-koch)
+                    (dessiner (von_koch x 600) x)
+                    (if (< x n)
+                         (niv (+ x 1)))))))
+    (niv 0)))
+
+(define (dessiner l n)
+  (if (= n 0) (draw l)
+       (begin
+       (dessiner (/ l 4) (- n 1))
+       (turn 60)
+       (dessiner (/ l 4) (- n 1))
+       (turn 240)
+       (dessiner (/ l 4) (- n 1))
+       (turn 60)
+       (dessiner (/ l 4) (- n 1))
+       )
+   ))

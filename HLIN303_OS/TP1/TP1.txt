@@ -1,0 +1,55 @@
+baptiste.chevalier@etu.umontpellier.fr
+
+oui
+
+u16
+
+Architecture :                          x86_64
+Mode(s) opératoire(s) des processeurs : 32-bit, 64-bit
+Boutisme :                              Little Endian
+Processeur(s) :                         6
+Liste de processeur(s) en ligne :       0-5
+Thread(s) par cœur :                    1
+Cœur(s) par socket :                    6
+Socket(s) :                             1
+Nœud(s) NUMA :                          1
+Identifiant constructeur :              GenuineIntel
+Famille de processeur :                 6
+Modèle :                                158
+Nom de modèle :                         Intel(R) Core(TM) i5-8400 CPU @ 2.80GHz
+Révision :                              10
+Vitesse du processeur en MHz :          800.049
+Vitesse maximale du processeur en MHz : 4000,0000
+Vitesse minimale du processeur en MHz : 800,0000
+BogoMIPS :                              5616.00
+Virtualisation :                        VT-x
+Cache L1d :                             32K
+Cache L1i :                             32K
+Cache L2 :                              256K
+Cache L3 :                              9216K
+Nœud NUMA 0 de processeur(s) :          0-5
+
+162.38.83.42
+eth0 connexion reseau filiaire
+lo = local
+
+mercredi 25 septembre 2019, 10:06:53 (UTC+0200)
+
+
+
+non, chmod u+r OuijeLesAimes
+
+non
+
+5445,ps -edf | grep emacs, 10:03
+
+grep Mathematica Mac.txt 
+grep "\.fr" Mac.txt 
+grep -i mac Mac.txt ou grep "[m,M]ac" Mac.txt
+grep -v US Mac.txt
+grep "[A-Z]" Mac.txt
+egrep "130\.[0-9]?{3}\.[0-9]?{3}\.[0-9]?{2}1" Mac.txt 
+
+
+
+

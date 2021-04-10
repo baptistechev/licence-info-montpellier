@@ -1,0 +1,15 @@
+CREATE TABLE personne
+(
+id NUMERIC(5) PRIMARY KEY,
+nom CHARACTER(40) NOT NULL,
+prenom CHARACTER(40)
+);
+
+CREATE TABLE voiture
+(
+immat CHARACTER(8) PRIMARY KEY,
+marque CHARACTER(40) NOT NULL,
+annee NUMERIC(8),
+prix NUMERIC(8) CHECK(prix>0),
+idProprio NUMERIC(5) REFERENCES personne(id)
+);

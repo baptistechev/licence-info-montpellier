@@ -1,0 +1,55 @@
+(define (bissextile? an)
+  (if (= (modulo an 4) 0)
+      (if (not(= (modulo an 100) 0))
+          #t
+          (= (modulo an 400) 0))#f))
+
+(define (nb-annee-bissextile an)
+  (letrec (
+           (boucle (lambda (a nbannees)
+                     (if (<= a an)
+                         (begin
+                           (if (bissextile? a)
+                               (boucle (+ 1 a) (+ nbannees 1))
+                               (boucle (+ 1 a) nbannees)))
+                           nbannees)))
+           )
+    (boucle 1900 0)))
+                     
+(define (nb-jours-au-1-jan m)
+  (cond
+    ((= m 1) 0)
+    ((= m 2) 31)
+    ((= m 3) (+ 31 28))
+    ((= m 4) (+ (* 2 31) 28))
+    ((= m 5) (+ (* 2 31) 30 28))
+    ((= m 6) (+ (* 3 31) 30 28))
+    ((= m 7) (+ (* 3 31) (* 2 30) 28))
+    ((= m 8) (+ (* 4 31) (* 2 30) 28))
+    ((= m 9) (+ (* 5 31) (* 2 30) 28))
+    ((= m 10) (+ (* 5 31) (* 3 30) 28))
+    ((= m 11) (+ (* 6 31) (* 3 30) 28))
+    ((= m 12) (+ (* 6 31) (* 4 30) 28))
+    (else (display "erreur, entrez un nb entre 1/12"))))
+
+(define (nb-jour d m y)
+  (let
+      ([nab (nb-annee-bissextile y)])
+      (- (+ (* nab 366) (* 365 (- (- y 1900) nab)) (if (and (> m 2) (bissextile? y)) (+(nb-jours-au-1-jan m) 1) (nb-jours-au-1-jan m)) d) 2)       
+  )
+)
+
+(define (jour-de-semaine d m y)
+  (let
+      ([j (modulo (nb-jour d m y) 7)])
+    (cond
+      ((= j 0) "Lundi")
+      ((= j 1) "Mardi")
+      ((= j 2) "Mercredi")
+      ((= j 3) "Jeudi")
+      ((= j 4) "Vendredi")
+      ((= j 5) "Samedi")
+      ((= j 6) "Dimanche")
+      )
+  )
+)

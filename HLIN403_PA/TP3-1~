@@ -1,0 +1,125 @@
+
+;---------Interface domino--------------
+
+;Constructeur
+(define make-domino (lambda (x y)
+                      (if (and (and (and (<= x 6) (> x 0)) (and (<= y 6) (> y 0))) (and (integer? x) (integer? y)))
+                          (cons x y)
+                          (display "Les nombres données ne sont pas valide !"))))
+;getters
+(define premierChiffre (lambda (d)
+                         (car d)))
+
+(define deuxiemeChiffre (lambda (d)
+                         (cdr d)))
+
+;Methodes
+
+(define est_double? (lambda (d) (= (premierChiffre d) (deuxiemeChiffre d))))
+
+(define retourner (lambda (d) (cons (deuxiemeChiffre d) (premierChiffre d))))
+
+;---------Interface Jeu----------------
+
+;Constructeur
+(define make-jeu (lambda () '()))
+
+;getters
+(define premierD (lambda (jeu) (car jeu)))
+
+(define getDominoX (lambda (x jeu)
+                     (letrec ((f (lambda (cpt L)
+                                   (if (= cpt x)
+                                       (car L)
+                                       (f (+ 1 cpt) (cdr L))))))
+                       (f 0 jeu))))
+
+(define dernierD (lambda (jeu)
+                   (if (empty? (cdr jeu)) (car jeu)
+                       (dernierD (cdr jeu)))))
+
+(define tailleJ (lambda (jeu)
+                  (letrec ((f (lambda (j acc)
+                                (if (empty? j)
+                                    acc
+                                    (f (cdr j) (+ 1 acc))))))
+                    (f jeu 0))))
+;setters
+(define addDomino (lambda (d jeu) (append jeu (list d))))
+
+;Methodes
+
+(define doubles (lambda (jeu)
+                  (letrec ((f (lambda (x acc)
+                                (cond
+                                  ((>= x (tailleJ jeu)) acc)
+                                  ((est_double? (getDominoX x jeu)) (f (+ 1 x) (append acc (list (getDominoX x jeu)))))
+                                  (else (f (+ 1 x) acc))))))
+                    (f 0 '()))))
+
+(define peut-jouer? (lambda (n j)
+                      (letrec ((f (lambda (x)
+                                        (cond
+                                          ((>= x (tailleJ j)) #f)
+                                          ((or (= (premierChiffre (getDominoX x j)) n) (= (deuxiemeChiffre (getDominoX x j)) n)) #t)
+                                          (else (f (+ 1 x)))))))
+                        (f 0))))
+
+(define extraire (lambda (n j)
+                   (letrec ((f (lambda (x)
+                                 (if (or (= (premierChiffre (getDominoX x j)) n) (= (deuxiemeChiffre (getDominoX x j)) n))
+                                     (getDominoX x j)
+                                     (f (+ 1 x))))))
+                     (f 0))))
+                                   
+
+;Tests
+(define chaine (addDomino (make-domino 6 6) (addDomino (make-domino 6 6) (addDomino (make-domino 2 6) (addDomino (make-domino 2 2) (make-jeu))))))
+(define jeu (addDomino (make-domino 1 2) (addDomino (make-domino 3 6) (addDomino (make-domino 5 2) (addDomino (make-domino 4 1) (make-jeu))))))
+(define ex (cons jeu (list chaine)))
+
+(define chaine_valide? (lambda (ch)
+                         (cond
+                           ((empty? (cdr ch)) #t)
+                           ((= (deuxiemeChiffre (car ch)) (premierChiffre (cadr ch))) (chaine_valide? (cdr ch)))
+                           (else #f))))
+
+(define ext_g (lambda (ch)
+                (premierChiffre (car ch))))
+
+(define ext_d (lambda (ch)
+                (if (empty? (cdr ch))
+                    (deuxiemeChiffre (car ch))
+                    (ext_d (cdr ch)))))
+
+(define supprimer (lambda (d jeu)
+                    (letrec ((f (lambda (x acc)
+                                  (cond
+                                          ((>= x (tailleJ jeu)) acc)
+                                          ((and (= (premierChiffre (getDominoX x jeu)) (premierChiffre d)) (= (deuxiemeChiffre (getDominoX x jeu)) (deuxiemeChiffre d))) (f (+ 1 x) acc))
+                                          (else (f (+ 1 x) (append acc (list (getDominoX x jeu)))))))))
+                      (f 0 '()))))
+  
+(define ajouter (lambda (d ch)
+                  (cond
+                    ((= (ext_g ch) (premierChiffre d)) (append (list (retourner d)) ch))
+                    ((= (ext_g ch) (deuxiemeChiffre d)) (append (list d) ch))
+                    ((= (ext_d ch) (premierChiffre d))  (append ch (list d)))
+                    ((= (ext_d ch) (deuxiemeChiffre d)) (append ch (list (retourner d)))))))
+
+
+(define pose (lambda (ex)
+               (let* ((jeu (car ex))
+                      (chaine (cadr ex)))
+                 (cond
+                   ((peut-jouer? (ext_g chaine) jeu)
+                    (let ((domino (extraire (ext_g chaine) jeu)))
+                      (cons (supprimer domino jeu) (list (ajouter domino chaine)))))
+                   ((peut-jouer? (ext_d chaine) jeu)
+                    (let ((domino (extraire (ext_d chaine) jeu)))
+                        (cons (supprimer domino jeu) (list (ajouter domino chaine)))))
+                   (else ex)))))
+                   
+                     
+
+

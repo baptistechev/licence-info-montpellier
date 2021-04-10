@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>Infocom</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="Exo2.css">
+</head>
+<body>
+	<header>
+		<h1>INFOCOM</h1>
+		<h2>Vente de matériel informatique</h2>
+	</header>
+	<nav>
+	  <ul id="menu">
+	    <li><a href="#DD">Disques Durs</a></li>
+	    <li><a href="#CS">Claviers et souris</a></li>
+	    <li><a href="#Divers">Divers</a></li>
+	  </ul>
+	</nav>
+	<div id="corps">
+		<section id="DD">
+			<h3>Disques Durs</h3>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="3"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Produits</td>
+						<td>Prix</td>
+						<td>Description</td>
+					</tr>
+					<tr>
+						<td>Segate 500Go</td>
+						<td>2000balle+TTC</td>
+						<td>Le meilleur hdd que t'as jamais vu</td>
+					</tr>
+					<tr>
+						<td>Segate 1To</td>
+						<td>3000balle+THC</td>
+						<td>Encore meilleur que le meilleur</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section id="CS">
+			<h3>Claviers et souris</h3>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="3"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Produits</td>
+						<td>Prix</td>
+						<td>Description</td>
+					</tr>
+					<tr>
+						<td>Segate 500Go</td>
+						<td>2000balle+TTC</td>
+						<td>Le meilleur hdd que t'as jamais vu</td>
+					</tr>
+					<tr>
+						<td>Segate 1To</td>
+						<td>3000balle+THC</td>
+						<td>Encore meilleur que le meilleur</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section id="Divers">
+			<h3>Divers</h3>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="3"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Produits</td>
+						<td>Prix</td>
+						<td>Description</td>
+					</tr>
+					<tr>
+						<td>Segate 500Go</td>
+						<td>2000balle+TTC</td>
+						<td>Le meilleur hdd que t'as jamais vu</td>
+					</tr>
+					<tr>
+						<td>Segate 1To</td>
+						<td>3000balle+THC</td>
+						<td>Encore meilleur que le meilleur</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<h3>Commandes</h3>
+			<form action="Exo1.html" method="GET" id="form">
+				<label for="qdd">Quantité de disques dur </label><input type="number" name="qdd" /><br />
+				<select name="type">
+					<option>disque dur Segate 500Go (100€)</option>
+					<option>disque dur Segate 1To (150€)</option>
+				</select><br />
+				<label for="check1">clavier logitech (10€)</label><input type="checkbox" id="check1">
+				<label for="check2">souris logitech (12€)</label><input type="checkbox" id="check2">
+				<label for="check3">clavier souris sans fils (35€)</label><input type="checkbox" id="check3"><br />
+				<label for="radio1">enceintes 5W (30€)</label><input type="radio" id="radio1" name="rad" exclusive>
+				<label for="radio2">tapis souris (5€)</label><input type="radio" id="radio2" name="rad" exclusive><br />
+				<label for="mail">Adresse email</label><input type="email" name="mail" placeholder="nom@mail.com"><br />
+				<label for="nom">Nom</label><input type="text" name="nom" placeholder="NOM" pattern="[A-Z]*"><br />
+				<input type="submit" value="Commander">
+			</form>
+		</section>
+	</div>
+	<footer>
+		<h2>INFOCOM le leader de la vente de matériel informatique</h2>
+		<a href="Exo5.html">Condition générales de ventes</a>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,1 @@
+ssh -A -Y baptiste.chevalier@etu.umontpellier.fr@x2go.umontpellier.fr

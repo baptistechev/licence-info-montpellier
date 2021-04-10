@@ -1,0 +1,9 @@
+package MesPremieresClasses;
+
+import java.util.Scanner;
+
+public class App {
+    public static void main(String[] a) throws java.io.IOException{
+	
+    }
+}

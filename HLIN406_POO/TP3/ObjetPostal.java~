@@ -1,0 +1,14 @@
+package TD3;
+
+public abstract class ObjetPostal{
+
+    private String origine;
+    private String destination;
+    private int codePostal;
+    private int poids;
+    private float volume;
+    private int txRecommandationn;
+
+    
+    
+}

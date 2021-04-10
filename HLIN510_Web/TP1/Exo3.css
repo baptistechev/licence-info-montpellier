@@ -1,0 +1,32 @@
+*{
+	background-color: #7FFFD4;
+}
+
+header{
+	text-align: center;
+	border-bottom: 2px solid black;
+}
+
+h1, h2, h3{
+	color: red;
+}
+
+#menu{
+	display: inline;
+	width: 20%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-transform: uppercase;
+	font-size: 80%;
+}
+
+#menu li{
+	padding-left: 15px;
+	display: inline;
+}
+
+footer{
+	border-top: 2px solid black;
+	text-align: center;
+}

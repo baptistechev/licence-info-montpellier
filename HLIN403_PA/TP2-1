@@ -1,0 +1,101 @@
+(require racket/list)
+
+(define LVal '(1 2 3 4 5 6 7 8 9 10 25 50 75 100))
+(define Op '(+ * - /))
+(define L0 '(0 0 0 0 0))
+
+(define (make-cible)
+  (+ (random 900) 100)
+  )
+
+(define (make-tirage)
+  (map (lambda (x) (list-ref LVal (random 14))) L0)
+  )
+
+(define (estDans? x l)
+  (if (null? l)
+      #f
+      (if (= x (car l))
+           #t
+           (estDans? x (cdr l))
+           )
+      )
+      )
+
+(define (estValide? op x y)
+  (if (and (= y 0) (eq? op '/))
+      #f
+  (and (<= 0 ((eval op) x y)) (integer? ((eval op) x y)))
+  ))
+
+(define (opere op nb1 nb2)
+  (cond ((null? op) '())
+        ((estValide? (car op) nb1 nb2) (cons ((eval (car op)) nb1 nb2) (opere (cdr op) nb1 nb2)))
+        ((estValide? (car op) nb2 nb1) (cons ((eval (car op)) nb2 nb1) (opere (cdr op) nb1 nb2)))
+        (else (opere (cdr op) nb1 nb2))))
+
+(define (aux2 li x y) ; retourne la liste li sans x et y
+  (if (null? li)
+      '()
+      (if (not (or (= (car li) x) (= (car li) y)))
+          (cons (car li) (aux2 (cdr li) x y))
+          (aux2 (cdr li) x y))))
+
+(define (aux3 l1 l2) ; retourne une liste de listes constituées d'un element de l1 et tous les elements de l2
+  (map (lambda (x) (cons x l2)) l1))
+
+(define (aux5 li) ; transforme une liste de listes en liste
+  (if (null? li)
+      '()
+  (append (car li) (aux5 (cdr li)))))
+
+(define (genere-plaques Op li)
+  (letrec ((L li)
+           (f (lambda (Op li)
+                (if (null? li)
+                    '()
+                    (append (aux5 (map (lambda (x) (aux3 (opere Op (car li) x) (aux2 L x (car li)))) (cdr li))) (f Op (cdr li)))))))
+    (f Op li)))
+
+;generer les plaques en boucles
+(define (genereAll Op li)
+  (letrec ((f (lambda (L)
+                (if (empty? L) '()
+                    (append (aux5 (map (lambda (l) (genere-plaques Op l)) L)) (f (aux5 (map (lambda (l) (genere-plaques Op l)) L))))))))
+    (append (list li) (f (list li)))))
+
+;faire une liste avec toutes les plaques dispo
+
+(define (plaques-dispo L)
+  (delete-doublons (aux5 L)))
+
+(define (memb? x liste)
+  (if (null? liste) #f
+      (or (eq? (car liste) x) (memb? x (cdr liste)))))
+
+(define (delete-doublons liste)
+  (if (null? liste)
+    '()
+     (let loop ((acc '()) (l liste))
+        (if (null? l) 
+            acc
+            (if (memb? (car l) acc)
+                (loop acc (cdr l))
+                (loop (cons (car l) acc) (cdr l)))))))
+
+;regarder si la cible est dans la liste
+
+(define (ceb Op jeu cible)
+  (if (memb? cible (plaques-dispo (genereAll Op jeu)))
+      (display "Le compte est bon !")
+      (begin (display "Le compte n'est pas bon :(  Entier le plus proche : ")
+             (approche (plaques-dispo (genereAll Op jeu)) cible))))
+
+(define (approche li cible)
+  (letrec ((f (lambda (plusProche L)
+                (cond
+                  ((empty? L) plusProche)
+                  ((< (abs (- (car L) cible)) (abs (- plusProche cible))) (f (car L) (cdr L)))
+                  (else (f plusProche (cdr L)))))))
+                   
+    (f (car li) li)))

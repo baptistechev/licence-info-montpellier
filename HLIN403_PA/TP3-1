@@ -1,0 +1,284 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname TP3-1) (read-case-sensitive #t) (teachpacks ((lib "draw.rkt" "teachpack" "htdp"))) (htdp-settings #(#t constructor repeating-decimal #t #t none #f ((lib "draw.rkt" "teachpack" "htdp")) #f)))
+
+;---------Interface domino--------------
+
+;Constructeur
+(define make-domino (lambda (x y)
+                      (if (and (and (and (<= x 6) (>= x 0)) (and (<= y 6) (>= y 0))) (and (integer? x) (integer? y)))
+                          (cons x (list y))
+                          (display "Les nombres données ne sont pas valide !"))))
+;getters
+(define premierChiffre (lambda (d)
+                         (car d)))
+
+(define deuxiemeChiffre (lambda (d)
+                         (cadr d)))
+
+;Methodes
+
+(define est_double? (lambda (d) (= (premierChiffre d) (deuxiemeChiffre d))))
+
+(define retourner (lambda (d) (cons (deuxiemeChiffre d) (list (premierChiffre d)))))
+
+;---------Interface Jeu----------------
+
+;Constructeur
+(define make-jeu (lambda () '()))
+
+;getters
+(define premierD (lambda (jeu) (car jeu)))
+
+(define getDominoX (lambda (x jeu)
+                     (letrec ((f (lambda (cpt L)
+                                   (if (= cpt x)
+                                       (car L)
+                                       (f (+ 1 cpt) (cdr L))))))
+                       (f 0 jeu))))
+
+(define dernierD (lambda (jeu)
+                   (if (empty? (cdr jeu)) (car jeu)
+                       (dernierD (cdr jeu)))))
+
+(define tailleJ (lambda (jeu)
+                  (letrec ((f (lambda (j acc)
+                                (if (empty? j)
+                                    acc
+                                    (f (cdr j) (+ 1 acc))))))
+                    (f jeu 0))))
+;setters
+(define addDomino (lambda (d jeu) (append jeu (list d))))
+
+;Methodes
+
+(define doubles (lambda (jeu)
+                  (letrec ((f (lambda (x acc)
+                                (cond
+                                  ((>= x (tailleJ jeu)) acc)
+                                  ((est_double? (getDominoX x jeu)) (f (+ 1 x) (append acc (list (getDominoX x jeu)))))
+                                  (else (f (+ 1 x) acc))))))
+                    (f 0 '()))))
+
+(define peut-jouer? (lambda (n j)
+                      (letrec ((f (lambda (x)
+                                        (cond
+                                          ((>= x (tailleJ j)) #f)
+                                          ((or (= (premierChiffre (getDominoX x j)) n) (= (deuxiemeChiffre (getDominoX x j)) n)) #t)
+                                          (else (f (+ 1 x)))))))
+                        (f 0))))
+
+(define extraire (lambda (n j)
+                   (letrec ((f (lambda (x)
+                                 (if (or (= (premierChiffre (getDominoX x j)) n) (= (deuxiemeChiffre (getDominoX x j)) n))
+                                     (getDominoX x j)
+                                     (f (+ 1 x))))))
+                     (f 0))))
+                                   
+
+;Tests
+;(define chaine (addDomino (make-domino 6 6) (addDomino (make-domino 6 6) (addDomino (make-domino 0 6) (addDomino (make-domino 2 0) (addDomino (make-domino 5 2) (addDomino (make-domino 3 5) (addDomino (make-domino 4 3) (addDomino (make-domino 6 4) (addDomino (make-domino 2 6) (addDomino (make-domino 1 2) (make-jeu))))))))))))
+;(define jeu (addDomino (make-domino 1 2) (addDomino (make-domino 3 6) (addDomino (make-domino 5 2) (addDomino (make-domino 4 1) (addDomino (make-domino 3 2) (addDomino (make-domino 5 6) (addDomino (make-domino 2 4) (make-jeu)))))))))
+;(define ex (cons jeu (list chaine)))
+
+(define chaine_valide? (lambda (ch)
+                         (cond
+                           ((empty? (cdr ch)) #t)
+                           ((= (deuxiemeChiffre (car ch)) (premierChiffre (cadr ch))) (chaine_valide? (cdr ch)))
+                           (else #f))))
+
+(define ext_g (lambda (ch)
+                (premierChiffre (car ch))))
+
+(define ext_d (lambda (ch)
+                (if (empty? (cdr ch))
+                    (deuxiemeChiffre (car ch))
+                    (ext_d (cdr ch)))))
+
+(define supprimer (lambda (d jeu)
+                    (letrec ((f (lambda (x acc dejaSupr)
+                                  (cond
+                                          ((>= x (tailleJ jeu)) acc)
+                                          ((and (= (premierChiffre (getDominoX x jeu)) (premierChiffre d)) (= (deuxiemeChiffre (getDominoX x jeu)) (deuxiemeChiffre d)) (not dejaSupr)) (f (+ 1 x) acc #t))
+                                          (else (f (+ 1 x) (append acc (list (getDominoX x jeu))) dejaSupr))))))
+                      (f 0 '() #f))))
+  
+(define ajouter (lambda (d ch)
+                  (cond
+                    ((= (ext_g ch) (premierChiffre d)) (append (list (retourner d)) ch))
+                    ((= (ext_g ch) (deuxiemeChiffre d)) (append (list d) ch))
+                    ((= (ext_d ch) (premierChiffre d))  (append ch (list d)))
+                    ((= (ext_d ch) (deuxiemeChiffre d)) (append ch (list (retourner d)))))))
+
+
+(define pose (lambda (ex)
+               (let* ((jeu (car ex))
+                      (chaine (cadr ex)))
+                 (cond
+                   ((peut-jouer? (ext_g chaine) jeu)
+                    (let ((domino (extraire (ext_g chaine) jeu)))
+                      (cons (supprimer domino jeu) (list (ajouter domino chaine)))))
+                   ((peut-jouer? (ext_d chaine) jeu)
+                    (let ((domino (extraire (ext_d chaine) jeu)))
+                        (cons (supprimer domino jeu) (list (ajouter domino chaine)))))
+                   (else ex)))))
+
+;----------------Graphique --------------------------
+
+(define (dessiner-gros-point position)
+  (draw-solid-disk position 2))
+
+(define (dessiner-rectangle pos1 pos2)
+  (let ((point1 pos1)
+        (point2 (make-posn (posn-x pos2) (posn-y pos1)))
+        (point3 pos2)
+        (point4 (make-posn (posn-x pos1) (posn-y pos2))))
+    (begin
+      (draw-solid-line point1 point2)
+      (draw-solid-line point2 point3)
+      (draw-solid-line point3 point4)
+      (draw-solid-line point4 point1))))
+
+(define (dessiner-carre position)
+  (let ((pos1 (make-posn (- (posn-x position) 12) (+ (posn-y position) 12)))
+        (pos2 (make-posn (+ (posn-x position) 12) (- (posn-y position) 12))))
+    (dessiner-rectangle pos1 pos2)))
+
+(define (dessiner-demi-dominos position nombre)
+    (cond ((= nombre 0) (dessiner-carre position))
+          ((= nombre 1) (begin
+                          (dessiner-gros-point position)
+                          (dessiner-carre position)))
+          ((= nombre 2) (let ((pos1 (make-posn (- (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos2 (make-posn (+ (posn-x position) 6) (+ (posn-y position) 6))))
+                          (begin
+                            (dessiner-gros-point pos1)
+                            (dessiner-gros-point pos2)
+                            (dessiner-carre position))))                            
+          ((= nombre 3) (let ((pos1 (make-posn (- (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos2 (make-posn (+ (posn-x position) 6) (+ (posn-y position) 6))))
+                          (begin
+                            (dessiner-gros-point pos1)
+                            (dessiner-gros-point pos2)
+                            (dessiner-gros-point position)
+                            (dessiner-carre position))))
+          ((= nombre 4) (let ((pos1 (make-posn (- (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos2 (make-posn (+ (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos3 (make-posn (- (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos4 (make-posn (+ (posn-x position) 6) (- (posn-y position) 6))))
+                          (begin
+                            (dessiner-gros-point pos1)
+                            (dessiner-gros-point pos2)
+                            (dessiner-gros-point pos3)
+                            (dessiner-gros-point pos4)
+                            (dessiner-carre position))))
+          ((= nombre 5) (let ((pos1 (make-posn (- (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos2 (make-posn (+ (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos3 (make-posn (- (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos4 (make-posn (+ (posn-x position) 6) (- (posn-y position) 6))))
+                          (begin
+                            (dessiner-gros-point pos1)
+                            (dessiner-gros-point pos2)
+                            (dessiner-gros-point pos3)
+                            (dessiner-gros-point pos4)
+                            (dessiner-gros-point position)
+                            (dessiner-carre position))))
+          ((= nombre 6) (let ((pos1 (make-posn (- (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos2 (make-posn (+ (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos3 (make-posn (- (posn-x position) 6) (+ (posn-y position) 6)))
+                              (pos4 (make-posn (+ (posn-x position) 6) (- (posn-y position) 6)))
+                              (pos5 (make-posn (posn-x position) (- (posn-y position) 6)))
+                              (pos6 (make-posn (posn-x position) (+ (posn-y position) 6))))
+                          (begin
+                            (dessiner-gros-point pos1)
+                            (dessiner-gros-point pos2)
+                            (dessiner-gros-point pos3)
+                            (dessiner-gros-point pos4)
+                            (dessiner-gros-point pos5)
+                            (dessiner-gros-point pos6)
+                            (dessiner-carre position))))
+          (else (display "Ce dominos n'existe pas !"))))
+
+(define (dessiner-dominos position domino)
+  (begin
+    (dessiner-demi-dominos (make-posn (- (posn-x position) 12) (posn-y position)) (premierChiffre domino))
+    (dessiner-demi-dominos (make-posn (+ (posn-x position) 12) (posn-y position)) (deuxiemeChiffre domino))))
+
+(define (dessiner-jeu-dominos jeu nombre)
+  (cond
+    ((= nombre 1) (letrec ((f (lambda (n1 n2 x y)
+                                (cond
+                                  ((>= n1 (tailleJ jeu)) 1)
+                                  ((> n2 5) (f n1 0 (+ 50 x) 375))
+                                  (else (begin
+                                          (dessiner-dominos (make-posn x y) (getDominoX n1 jeu))
+                                          (f (+ 1 n1) (+ 1 n2) x (- y 25))))))))
+                    (f 0 1 25 375)))                               
+    ((= nombre 2) (letrec ((f (lambda (n1 n2 x y)
+                                (cond
+                                  ((>= n1 (tailleJ jeu)) 1)
+                                  ((> n2 5) (f n1 0 (- x 50) 375))
+                                  (else (begin
+                                          (dessiner-dominos (make-posn x y) (getDominoX n1 jeu))
+                                          (f (+ 1 n1) (+ 1 n2) x (- y 25))))))))
+                    (f 0 1 375 375)))))
+
+(define (dessiner-chaine-dominos chaine)
+  (letrec ((f (lambda (n1 n2 x y)
+                                (cond
+                                  ((>= n1 (tailleJ chaine)) 1)
+                                  ((> n2 8) (f n1 0 25 (+ 25 y)))
+                                  (else (begin
+                                          (dessiner-dominos (make-posn x y) (getDominoX n1 chaine))
+                                          (f (+ 1 n1) (+ 1 n2) (+ 50 x) y)))))))
+                    (f 0 1 25 25)))
+(define (generer-jeu x)
+  (if (= x 0)
+      (make-jeu)
+      (addDomino (make-domino (random 7) (random 7)) (generer-jeu (- x 1)))))
+
+(define (InitChaine)
+  (list (make-domino (random 7) (random 7))))
+
+(define (debut-jeu)
+  (list (generer-jeu 10) (generer-jeu 10) (InitChaine)))
+
+(define (jouer j1 j2 ch)
+  (letrec ((f (lambda (j1 j2 ch tour)
+                (begin
+                  (afficher-jeu j1 j2 ch)
+                  (sleep-for-a-while 2)
+                  (cond
+                    ((and (empty? j1) (empty? j2)) (display "Les deux joueurs ne peuvent plus jouer , fin du jeu ! "))
+                    ((= tour 1)
+                     (if (empty? j1)
+                          (display "Le joueur 1 n'a plus de dominos")
+                         (if (or (peut-jouer? (ext_g ch) j1) (peut-jouer? (ext_d ch) j1))
+                             (f (car (pose (cons j1 (list ch)))) j2 (cadr (pose (cons j1 (list ch)))) 2)
+                             (display "J1 ne peut plus jouer !!"))))
+                    ((= tour 2)
+                     (if (empty? j2)
+                          (display "Le joueur 2 n'a plus de dominos")
+                         (if (or (peut-jouer? (ext_g ch) j2) (peut-jouer? (ext_d ch) j2))
+                             (f j1 (car (pose (cons j2 (list ch)))) (cadr (pose (cons j2 (list ch)))) 1)
+                             (display "J2 ne peut plus jouer !!")))))))))
+           (f j1 j2 ch (+ (random 2) 1))))          
+  
+  
+(define (afficher-jeu j1 j2 ch)
+  (begin
+    (clear-all)
+    (dessiner-jeu-dominos j1 1)
+    (dessiner-jeu-dominos j2 2)
+    (dessiner-chaine-dominos ch)))
+
+(define (jeu)
+  (let ((G (debut-jeu)))
+    (begin
+      (start 400 400)
+      (jouer (car G) (cadr G) (caddr G)))))
+    
+                   
+                     
+
+

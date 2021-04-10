@@ -1,0 +1,66 @@
+<html>
+  <head>
+     <meta charset="utf-8" />
+     <script src="https://d3js.org/d3.v5.min.js"></script>
+     <script>
+         function creeHexagone(rayon) {
+            let points = new Array();
+            for (let i = 0; i < 6; ++i) {
+               let angle = i * 60 * Math.PI / 180;  // 0, 60, 120, 180, 240, 300
+                                                   // radians = degres*PI/180
+               let x = Math.sin(angle) * rayon;
+               let y = -Math.cos(angle) * rayon;
+               //console.log("x="+Math.round(x*100)/100+" y="+Math.round(y*100)/100);
+               points.push([Math.round(x*100)/100, Math.round(y*100)/100]);
+            }
+            return points;
+         }
+
+         function genereDamier(rayon, nbLignes, nbColonnes) {
+            let points = creeHexagone(rayon);
+            console.log(points);
+
+            let col = 2*points[1][0];
+            let row = 2*rayon;
+
+            d3.select("#damier")
+               .append("svg")
+               .attr("width", nbLignes*col)
+               .attr("height", nbColonnes*row );
+
+            let i = 0;
+            for (let ligne=0; ligne < nbLignes; ligne++) {
+               for (let colonne=0; colonne < nbColonnes; colonne++) {
+                  // creation de chaque hexagone du damier via une balise path ou polygone :
+                  // voir indications sur la page suivante
+
+                  let listeCoord = "";
+                  let x, y;
+                  for (h in points) {
+                     // Si ligne impair, d´ecalage des hexagones d’un rayon
+                     if (ligne % 2) x = col + points[h][0] + colonne*col; // calcul de l’abscisse (ligne impaire)
+                     else x = col/2 + points[h][0] + colonne*col; // calcul de l’abscisse (ligne paire)
+                     y = rayon + ligne*row + points[h][1] + ligne*points[1][1]; // calcul de l’ordonn´ee
+                     listeCoord += " "+ x + "," + y; // ajout des coordonnees du point (abscisse et ordonn´ee s´epar´es par une virgule)
+                  }
+                  d3.select("svg")
+                     .append("polygon")
+                     .attr("id", i)
+                     .attr("points", listeCoord)
+                     .attr("stroke", "black")
+                     .attr("fill", "white")
+                     .on("click", function(){
+                        console.log(d3.select(this).attr('id'));
+                        d3.select(this).attr("fill", "red");
+                     });
+                  i++;
+               }
+            }
+         }
+     </script>
+    
+  </head>
+  <body onLoad="genereDamier(100, 8, 8)">  <!-- rayon est le rayon du cercle dans lequel l'hexagone sera inscrit -->
+     <div id="damier"></div>
+  </body>
+</html>

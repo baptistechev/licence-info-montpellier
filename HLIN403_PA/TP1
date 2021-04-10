@@ -1,0 +1,59 @@
+(define (monabs x)
+  (if (< x 0) (- x) x))
+
+(define (care-div a b)
+  (if (= 0 b)
+      (display "Erreur division par 0 impossible !!!!!!")
+      (/ a b)))
+
+(define (s t)
+  (cond
+    [(<= t -3) 0]
+    [(and (> t -3) (<= t -1)) 1]
+    [(and (> t -1) (<= t 2)) 0]
+    [(and (> t 2) (<= t 4)) 2]
+    [(> t 4) 0])
+  )
+
+(define (placement c t n)
+  (* (expt (+ 1 t) n) c)
+  )
+
+(require (lib "turtles.ss" "graphics"))
+
+(turtles #t)
+
+(define (spirale x)
+    (draw 50)
+    (turn 10)
+    (spirale (+ x 1)))
+
+(define (carre x)
+  (letrec (
+           (boucle (lambda (r)
+                   (begin
+                    (draw x)
+                    (turn 90)
+                    (if (< r 4) 
+                    (boucle (+ 1 r)))))))
+           (boucle 0)))
+
+(define (hexagone x)
+  (letrec (
+           (boucle (lambda (r)
+                   (begin
+                    (draw x)
+                    (turn 60)
+                    (if (< r 6) 
+                    (boucle (+ 1 r)))))))
+           (boucle
+            0)))
+(define (figure x nbcote)
+  (letrec (
+           (boucle (lambda (r)
+                   (begin
+                    (draw x)
+                    (turn (/ 360 nbcote))
+                    (if (< r nbcote) 
+                    (boucle (+ 1 r)))))))
+           (boucle 0)))

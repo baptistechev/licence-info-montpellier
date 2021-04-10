@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<title>Bataille Navale</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		table, th, td, tr{
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<h1>Bataille Navale</h1>
+	<table>
+	<tbody>
+		<tr>
+			<th> </th>
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+			<th>E</th>
+		</tr>
+		<tr>
+			<th>1</th>
+			<td><input type="button" id="A1" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="B1" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="C1" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="D1" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="E1" value="?" onclick="klick(this.id)"></td>
+		</tr>
+		<tr>
+			<th>2</th>
+			<td><input type="button" id="A2" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="B2" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="C2" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="D2" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="E2" value="?" onclick="klick(this.id)"></td>
+		</tr>
+		<tr>
+			<th>3</th>
+			<td><input type="button" id="A3" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="B3" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="C3" value="?" onclick="klick(this.id)" onclick="kiclck()"></td>
+			<td><input type="button" id="D3" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="E3" value="?" onclick="klick(this.id)"></td>
+		</tr>
+		<tr>
+			<th>4</th>
+			<td><input type="button" id="A4" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="B4" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="C4" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="D4" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="E4" value="?" onclick="klick(this.id)"></td>
+		</tr>
+		<tr>
+			<th>5</th>
+			<td><input type="button" id="A5" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="B5" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="C5" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="D5" value="?" onclick="klick(this.id)"></td>
+			<td><input type="button" id="E5" value="?" onclick="klick(this.id)"></td>
+		</tr>
+	</tbody>
+	</table>
+	<input type="submit" id="reinit" value="Reinitialiser le jeu" onclick="reinit()">
+	<script type="text/javascript">
+
+		let bateau = 5;
+		let tab = [];
+		let Lettre = ['A','B','C','D','E'];
+
+		for(let i=0;i<bateau;i++)
+			tab.push(Lettre[rand() -1 ] + rand()) //pb 2 fois la même pose
+
+		console.log(tab);
+
+		function rand(){
+			return Math.floor(Math.random()*5) + 1;
+		}
+
+		function klick(id){
+
+			if(bateau > 0){
+				if(tab.includes(id)){
+					document.getElementById(id).value = "BOOM!";
+					bateau--;
+				}
+				else
+					document.getElementById(id).value = "~~~~";
+			}else
+				alert("Le jeu est terminé !")
+
+			if(bateau == 0)
+				alert("Bravo ! Vous avez gagné !")
+		}
+
+		function reinit(){
+			document.location.reload(true);
+		}
+
+	</script>
+</body>
+</html>

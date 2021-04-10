@@ -1,0 +1,24 @@
+int inutile;
+
+void parcoursPos(int i, int nbAntenne, const int coordMaisons[][2], int n,bool emetteurs[]){
+  if(nbAntenne != 0){
+    for(int j = i; j<n;j++){
+      emetteurs[j] = true;
+      parcoursPos(j+1,nbAntenne-1,coordMaisons,n,emetteurs);
+      emetteurs[j] = false;
+    }
+  }else{
+    std::cout << "Loading ... ";
+		 AffichageMaisonsEmetteurs(n, coordMaisons, emetteurs, "EmetteursOpt");		 
+    std::cin >> inutile;
+  }
+}
+
+int ChoixEmetteursOpt(int n, const int coordMaisons[][2], bool emetteurs[])
+{
+
+  for(int k = 0; k<=n; k++){
+    parcoursPos(0,k,coordMaisons,n,emetteurs);
+  }
+  return 0;
+}
