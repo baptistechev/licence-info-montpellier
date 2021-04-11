@@ -35,4 +35,4 @@ Cours Licence informatique Université Montpellier
 - [HLIN606 - Programmation Lineaire](../../tree/master/HLIN6066_PL)
 - [HLIN611 - Reseaux](../../tree/master/HLIN611_Reseau)
 - [HLIN612 - Complexite et calculabilite]
-- 
+
