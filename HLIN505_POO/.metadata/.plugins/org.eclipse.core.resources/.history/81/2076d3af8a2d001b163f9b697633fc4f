@@ -1,0 +1,9 @@
+package pkg3;
+
+public class InjDependance {
+	
+	public void InjDep(Object o) {
+		
+	}
+	
+}

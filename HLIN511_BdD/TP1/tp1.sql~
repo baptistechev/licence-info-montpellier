@@ -1,0 +1,11 @@
+Select nom, prenom from abonne where ville='MONTPELLIER';
+
+Select * from exemplaire where code_pret='EMPRUNTABLE';
+
+Select titre, categorie from livre where categorie<>'SCIENCES' and categorie<>'MEDECINE' and categorie<>'LOISIRS' order by categorie, titre;
+
+Select * from emprunt where d_ret_reel is null;
+
+Select num_ex, d_emprunt from emprunt em join Abonne ab on ab.num_ab=em.num_ab where nom='DUPONT' and prenom='JEAN' order by d_emprunt;
+
+Select numero, code_pret, etat from exemplaire em join livre l on em.isbn=l.isbn where titre='LE MUR';

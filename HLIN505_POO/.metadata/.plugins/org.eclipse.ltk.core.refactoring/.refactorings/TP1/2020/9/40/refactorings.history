@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;TP3/src/pkg3&apos;&#x0D;&#x0A;- Original project: &apos;TP1&apos;&#x0D;&#x0A;- Destination element: &apos;TP3/src/pkg3&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     pkg2.ListeChainee.java&#x0D;&#x0A;     pkg2.Main.java" description="Copy compilation units" destination="=TP3/src&lt;pkg3" element1="/src&lt;pkg2{ListeChainee.java" element2="/src&lt;pkg2{Main.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1601306039434" units="2" version="1.0"/>
+</session>

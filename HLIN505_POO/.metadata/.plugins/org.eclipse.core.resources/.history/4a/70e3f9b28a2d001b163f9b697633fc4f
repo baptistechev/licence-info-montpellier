@@ -1,0 +1,15 @@
+package pkg3;
+
+import java.lang.reflect.Field;
+
+public class InjDependance {
+	
+	public void InjDep(Object o) {
+		
+		for(Field f : o.getClass().getFields()) {
+			if(f.isAnnotationPresent(InjectMe.class))
+		}
+		
+	}
+	
+}

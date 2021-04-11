@@ -1,0 +1,3 @@
+package pkg2;
+
+public enum TacheType {ECRIRE, AMELIORER_COMPLEXITE, REFACTORISER, TESTER;}

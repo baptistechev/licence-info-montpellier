@@ -1,0 +1,12 @@
+package pkg3;
+
+public class A {
+	
+	B b;
+	
+	public void m() {
+		System.out.println("Je suis m dans A");
+		b.n();
+	}
+
+}

@@ -1,0 +1,4 @@
+create table AB_NB(
+       NUMERO number(6) not null,
+       NB number(3)
+);

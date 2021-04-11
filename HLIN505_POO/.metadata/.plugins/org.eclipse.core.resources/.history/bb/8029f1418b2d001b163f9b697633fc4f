@@ -1,0 +1,19 @@
+package pkg3;
+
+public class main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		A a = new A();
+		try {
+			a.m();
+		}catch (Exception e) {
+			InjDependance i = new InjDependance();
+			i.InjDep(a);
+			a.m();
+		}
+		
+	}
+
+}
