@@ -32,7 +32,7 @@ Cours Licence informatique Université Montpellier
 - HLIN601 - TER
 - HLIN602 - Logique 2
 - [HLIN603 - Objets avances](../../tree/master/HLIN603_ObjetsA)
-- [HLIN606 - Programmation Lineaire](../../tree/master/HLIN6066_PL)
+- [HLIN606 - Programmation Lineaire](../../tree/master/HLIN606_PL)
 - [HLIN611 - Reseaux](../../tree/master/HLIN611_Reseau)
 - HLIN612 - Complexite et calculabilite
 
